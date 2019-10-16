@@ -22,5 +22,3 @@ Vagrant.configure("2") do |config|
     ceph2.vm.network :private_network, ip: "192.168.10.3"
   end
 end
-
-# config.vm.provision "shell", inline: "echo Hello"
