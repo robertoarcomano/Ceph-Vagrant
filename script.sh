@@ -16,8 +16,8 @@ USER=$1
 useradd -ms /bin/bash $USER
 mkdir -p /home/$USER/.ssh
 chmod 700 /home/$USER/.ssh
-ssh-keygen -f /home/$USER/.ssh/id_rsa -N ""
-cp /home/$USER/.ssh/id_rsa.pub /home/$USER/.ssh/authorized_keys
+# ssh-keygen -f /home/$USER/.ssh/id_rsa -N ""
+# cp /home/$USER/.ssh/id_rsa.pub /home/$USER/.ssh/authorized_keys
 
 # Add sudo rules
 echo "$USER ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$USER

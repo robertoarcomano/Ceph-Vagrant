@@ -7,8 +7,16 @@ Vagrant.configure("2") do |config|
     s.args = [CEPH_USER]
   end
   config.vm.provision "file", source: "id_rsa.pub", destination: "/home/vagrant/id_rsa.pub"
+  config.vm.provision "file", source: "id_rsa", destination: "/home/vagrant/id_rsa"
   config.vm.provision "shell" do |s|
-    s.inline = "cat /home/vagrant/id_rsa.pub >> /home/" + CEPH_USER + "/.ssh/authorized_keys; chown " + CEPH_USER + " -R /home/" + CEPH_USER + "; rm /home/vagrant/id_rsa.pub"
+    s.inline = "mv /home/vagrant/id_rsa.pub /home/" + CEPH_USER + "/.ssh/id_rsa.pub; cp /home/" + CEPH_USER + "/.ssh/id_rsa.pub /home/" + CEPH_USER + "/.ssh/authorized_keys; \
+                mv /home/vagrant/id_rsa /home/" + CEPH_USER + "/.ssh/id_rsa; \
+                chown " + CEPH_USER + " -R /home/" + CEPH_USER + ""
+    s.privileged = true
+  end
+  config.vm.provision "file", source: "hosts", destination: "/home/vagrant/hosts"
+  config.vm.provision "shell" do |s|
+    s.inline = "sudo cat /home/vagrant/hosts >> /etc/hosts; rm /home/vagrant/hosts"
     s.privileged = true
   end
 
@@ -20,5 +28,10 @@ Vagrant.configure("2") do |config|
   config.vm.define "ceph2" do |ceph2|
     ceph2.vm.hostname = "ceph2"
     ceph2.vm.network :private_network, ip: "192.168.10.3"
+  end
+
+  config.vm.define "ceph3" do |ceph3|
+    ceph3.vm.hostname = "ceph3"
+    ceph3.vm.network :private_network, ip: "192.168.10.4"
   end
 end
