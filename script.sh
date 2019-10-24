@@ -1,6 +1,9 @@
 #!/bin/bash
 env TZ=Europe/Dublin
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+wget -q -O- 'https://download.ceph.com/keys/release.asc' | sudo apt-key add -
+echo deb https://download.ceph.com/debian-{ceph-stable-release}/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list
+echo deb https://download.ceph.com/debian-mimic/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list
 apt-get update && apt-get install -y openssh-server vim supervisor ceph-deploy iputils-ping ntp sudo systemd
 mkdir /var/run/sshd
 
@@ -22,3 +25,11 @@ chmod 700 /home/$USER/.ssh
 # Add sudo rules
 echo "$USER ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$USER
 chmod 0440 /etc/sudoers.d/$USER
+
+# Create and configure loop device
+dd if=/dev/zero of=/home/$USER/DISK1 bs=1M count=1000
+chown $USER /home/$USER/DISK1
+sudo losetup /dev/loop0 /home/$USER/DISK1
+pvcreate /dev/loop0
+vgcreate vg00 /dev/loop0
+lvcreate -n lvol0 vg00 -l+100%Free

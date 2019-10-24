@@ -20,18 +20,28 @@ Vagrant.configure("2") do |config|
     s.privileged = true
   end
 
+  config.vm.define "cephclient" do |cephclient|
+    cephclient.vm.hostname = "cephclient"
+    cephclient.vm.network :private_network, ip: "192.168.10.2"
+  end
+
+  config.vm.define "cephadmin" do |cephadmin|
+    cephadmin.vm.hostname = "cephadmin"
+    cephadmin.vm.network :private_network, ip: "192.168.10.3"
+  end
+
   config.vm.define "ceph1" do |ceph1|
     ceph1.vm.hostname = "ceph1"
-    ceph1.vm.network :private_network, ip: "192.168.10.2"
+    ceph1.vm.network :private_network, ip: "192.168.10.4"
   end
 
   config.vm.define "ceph2" do |ceph2|
     ceph2.vm.hostname = "ceph2"
-    ceph2.vm.network :private_network, ip: "192.168.10.3"
+    ceph2.vm.network :private_network, ip: "192.168.10.5"
   end
 
   config.vm.define "ceph3" do |ceph3|
     ceph3.vm.hostname = "ceph3"
-    ceph3.vm.network :private_network, ip: "192.168.10.4"
+    ceph3.vm.network :private_network, ip: "192.168.10.6"
   end
 end
