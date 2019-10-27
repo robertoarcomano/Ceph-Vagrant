@@ -62,3 +62,10 @@ ssh $SSH_PARAMS ceph-admin@cephclient "sudo mkdir /media/rbd0; \
                                        sudo mount /dev/rbd0 /media/rbd0; \
                                        sudo rsync -av /bin /etc /media/rbd0/; \
                                        sudo ls -al /media/rbd0"
+
+# 11. Launch Unit test
+# 11.1 Install into local machine bats
+sudo apt install -y bats
+
+# 11.2. Launch Test
+./testCeph.sh
