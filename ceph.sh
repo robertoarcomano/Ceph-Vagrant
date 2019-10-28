@@ -56,16 +56,12 @@ ssh $SSH_PARAMS ceph-admin@cephclient sudo rbd create storage0 --size 100M --poo
 # 9. Map the storage into the client
 ssh $SSH_PARAMS ceph-admin@cephclient sudo rbd map storage0 --name client.admin
 
-# 10. Use ceph disk
-ssh $SSH_PARAMS ceph-admin@cephclient "sudo mkdir /media/rbd0; \
-                                       sudo mkfs.ext4 /dev/rbd0; \
-                                       sudo mount /dev/rbd0 /media/rbd0; \
-                                       sudo rsync -av /bin /etc /media/rbd0/; \
-                                       sudo ls -al /media/rbd0"
-
-# 11. Launch Unit test
-# 11.1 Install into local machine bats
+# 10. Launch Unit test
+# 10.1 Install into local machine bats
 sudo apt install -y bats
 
-# 11.2. Launch Test
+# 10.2. Wait to settle down
+sleep 120
+
+# 10.3. Launch Test
 ./testCeph.sh
