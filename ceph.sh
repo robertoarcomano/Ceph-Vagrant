@@ -20,6 +20,8 @@ ssh-keygen -t rsa -N "" -f ./id_rsa
 SSH_PARAMS="-o StrictHostKeyChecking=no -i ./id_rsa"
 
 # 3. Start Vagrant VMs
+# You can specify libvirt provider
+# vagrant up --provider=libvirt
 vagrant up
 
 # 4. SSH dummy connections to create entries on known_hosts
