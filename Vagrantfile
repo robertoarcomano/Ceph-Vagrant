@@ -1,6 +1,8 @@
 CEPH_USER = "ceph-admin"
 
 Vagrant.configure("2") do |config|
+  # For libvirt
+  # config.vm.box = "generic/ubuntu1804"
   config.vm.box = "ubuntu/bionic64"
   config.vm.provision "shell" do |s|
     s.path = "script.sh"
